@@ -1,0 +1,27 @@
+{
+  "name": "mc-connector",
+  "version": "1.0.0",
+  "description": "Minecraft server runner that shares output to a Discord server",
+  "main": "mcconnector.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lvoytek/mc-connector.git"
+  },
+  "author": "Lena Voytek",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/lvoytek/mc-connector/issues"
+  },
+  "homepage": "https://github.com/lvoytek/mc-connector#readme",
+  "dependencies": {
+    "discord.js": "^14.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
