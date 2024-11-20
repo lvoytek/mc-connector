@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-export default {
+export const config = {
     Token: process.env.TOKEN ?? ''
 }
