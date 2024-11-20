@@ -4,6 +4,7 @@
   "description": "Minecraft server runner that shares output to a Discord server",
   "main": "mcconnector.js",
   "scripts": {
+    "start": "ts-node src/mcconnector.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,7 +18,8 @@
   },
   "homepage": "https://github.com/lvoytek/mc-connector#readme",
   "dependencies": {
-    "discord.js": "^14.16.3"
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "@types/node": "^22.9.1",
