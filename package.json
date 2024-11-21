@@ -5,6 +5,7 @@
   "main": "mcconnector.js",
   "scripts": {
     "start": "ts-node src/mcconnector.ts",
+    "deploy": "ts-node src/deploy-commands.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
