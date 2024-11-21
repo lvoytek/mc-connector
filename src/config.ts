@@ -3,5 +3,6 @@ dotenv.config();
 
 export const config = {
     Token: process.env.TOKEN ?? '',
-    ServerJarFile: process.env.SERVER_JAR_FILE ?? 'server.jar'
+    ServerJarFile: process.env.SERVER_JAR_FILE ?? 'server.jar',
+    ClientID: process.env.CLIENT_ID ?? ''
 }
