@@ -1,11 +1,16 @@
 import { Client } from "discord.js";
 import * as path from "path";
 import ready from "./listeners/ready";
+import interactionCreate from "./listeners/interactionCreate";
 import { config } from "./config";
+
 import {spawn, ChildProcess} from "child_process";
 
 const client = new Client({
-    intents: []
+    intents: [
+        "GuildMessages",
+        "Guilds"
+    ]
 });
 
 var mcDaemon: ChildProcess;
@@ -39,5 +44,8 @@ function startMinecraft(): void {
 }
 
 ready(client);
+interactionCreate(client);
+
 client.login(config.Token);
+
 startMinecraft();
