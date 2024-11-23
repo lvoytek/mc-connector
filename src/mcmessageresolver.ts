@@ -3,6 +3,7 @@ export enum MessageType {
   QUIT = "🚪",
   SERVER_INFO = "ℹ️",
   DEATH = "💀",
+  USER_MESSAGE = "💬",
   OTHER = "🤷",
   NONE = "🕴️",
 }
@@ -37,6 +38,10 @@ export const MessageResolver = {
     };
   },
   getType(messageContent: string): MessageType {
+    if (messageContent.match(/^<([^>]+)> (.+)$/)) {
+      return MessageType.USER_MESSAGE;
+    }
+
     if (messageContent.match(/joined the game/)) {
       return MessageType.JOIN;
     }
