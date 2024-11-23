@@ -36,10 +36,14 @@ function startMinecraft(): void {
       const message = MessageResolver.extract(input);
 
       if (
-        message.messageType in
-        [MessageType.JOIN, MessageType.QUIT, MessageType.DEATH]
+        [MessageType.JOIN, MessageType.QUIT, MessageType.DEATH].includes(
+          message.messageType
+        )
       ) {
-        DiscordLogger.send(client, `${message.messageType} ${message.contents}`);
+        DiscordLogger.send(
+          client,
+          `${message.messageType} ${message.contents}`
+        );
       }
     });
   }
