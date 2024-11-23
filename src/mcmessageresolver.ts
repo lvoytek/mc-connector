@@ -1,7 +1,8 @@
 export enum MessageType {
-  JOIN = "✅",
-  QUIT = "🚪",
+  JOIN = "➡️",
+  QUIT = "⬅️",
   SERVER_INFO = "ℹ️",
+  ACHIEVEMENT = "🎉",
   DEATH = "💀",
   USER_MESSAGE = "💬",
   OTHER = "🤷",
@@ -48,6 +49,10 @@ export const MessageResolver = {
 
     if (messageContent.match(/left the game/)) {
       return MessageType.QUIT;
+    }
+
+    if (messageContent.match(/has made the advancement/)) {
+      return MessageType.ACHIEVEMENT;
     }
 
     const deathRE =

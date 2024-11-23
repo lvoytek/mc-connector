@@ -36,9 +36,12 @@ function startMinecraft(): void {
       const message = MessageResolver.extract(input);
 
       if (
-        [MessageType.JOIN, MessageType.QUIT, MessageType.DEATH].includes(
-          message.messageType
-        )
+        [
+          MessageType.JOIN,
+          MessageType.QUIT,
+          MessageType.DEATH,
+          MessageType.ACHIEVEMENT,
+        ].includes(message.messageType)
       ) {
         DiscordLogger.send(
           client,
