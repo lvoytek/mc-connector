@@ -1,4 +1,5 @@
 import { Client } from "discord.js";
+import * as readline from "readline";
 import * as path from "path";
 import ready from "./listeners/ready";
 import interactionCreate from "./listeners/interactionCreate";
@@ -29,14 +30,16 @@ function startMinecraft(): void {
   });
 
   if (mcDaemon.stdout) {
-    mcDaemon.stdout.on("data", (data: Buffer) => {
-      DiscordLogger.send(client, `${data}`);
+    const stdoutLines = readline.createInterface({input: mcDaemon.stdout});
+    stdoutLines.on('line', (input) => {
+      DiscordLogger.send(client, input);
     });
   }
 
   if (mcDaemon.stderr) {
-    mcDaemon.stderr.on("data", (data: Buffer) => {
-      DiscordLogger.err(client, `${data}`);
+    const stderrLines = readline.createInterface({input: mcDaemon.stderr});
+    stderrLines.on('line', (input) => {
+      DiscordLogger.err(client, input);
     });
   }
 
