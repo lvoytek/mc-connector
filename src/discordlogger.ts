@@ -14,6 +14,6 @@ export const DiscordLogger = {
     }
   },
   async err(client: Client, data: string) {
-    await this.send(client, `Error: ${data}`);
+    await this.send(client, `‼️ ${data}`);
   },
 };
