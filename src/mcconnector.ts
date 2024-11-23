@@ -42,7 +42,7 @@ function startMinecraft(): void {
 
   mcDaemon.on("exit", (code: number | null) => {
     console.error(`Minecraft exited with code: ${code}`);
-    startMinecraft();
+    setTimeout(startMinecraft, 10000);
   });
 }
 
