@@ -4,7 +4,9 @@
   "description": "Minecraft server runner that shares output to a Discord server",
   "main": "mcconnector.js",
   "scripts": {
-    "start": "ts-node src/mcconnector.ts",
+    "build": "tsc",
+    "start": "node dist/mcconnector.js",
+    "dev": "ts-node src/mcconnector.ts",
     "deploy": "ts-node src/deploy-commands.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
