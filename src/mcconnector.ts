@@ -51,7 +51,7 @@ function startMinecraft(): void {
         const userDiscordMessageRE = /^<([^>]+)> (dis:|discord:|!)\s*/;
         if (message.contents.match(userDiscordMessageRE)) {
           const userMessage = message.contents.replace(
-            userDiscordMessageRE,
+            /(dis:|discord:|!)\s*/,
             ""
           );
           DiscordLogger.send(client, `${message.messageType} ${userMessage}`);
