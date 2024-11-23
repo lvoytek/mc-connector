@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, CommandInteraction } from "discord.js";
 import { Command } from "../command";
+import { Channels } from "../channels";
 
 export const SetupMinecraft: Command = {
   data: new SlashCommandBuilder()
@@ -14,10 +15,11 @@ export const SetupMinecraft: Command = {
     const channel =
       interaction.options.get("channel")?.channel ?? interaction.channel;
 
-    if (channel && "id" in channel) {
-      await interaction.reply(channel.id);
+    if (channel && "id" in channel && "name" in channel) {
+        Channels.add(channel.id);
+      await interaction.reply("Added Minecraft to channel " + channel.name);
     } else {
-      interaction.reply("No channel id :(");
+      await interaction.reply("Error: Invalid channel provided");
     }
   },
 };
