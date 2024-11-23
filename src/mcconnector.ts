@@ -70,7 +70,7 @@ function startMinecraft(): void {
   }
 
   mcDaemon.on("exit", (code: number | null) => {
-    DiscordLogger.send(client, `💥 Server crash! exit code: ${code}`);
+    DiscordLogger.send(client, `💥 Server crash! Exit code: ${code}`);
     setTimeout(startMinecraft, 10000);
   });
 }
