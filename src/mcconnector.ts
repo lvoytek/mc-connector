@@ -47,6 +47,18 @@ function startMinecraft(): void {
           client,
           `${message.messageType} ${message.contents}`
         );
+      } else if (message.messageType == MessageType.USER_MESSAGE) {
+        if (
+          message.contents.startsWith("dis:") ||
+          message.contents.startsWith("discord:") ||
+          message.contents.startsWith("!")
+        ) {
+          const userMessage = message.contents.replace(
+            /^(dis:|discord:|!)\s*/,
+            ""
+          );
+          DiscordLogger.send(client, `${message.messageType} ${userMessage}`);
+        }
       }
     });
   }
