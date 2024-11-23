@@ -47,6 +47,8 @@ function startMinecraft(): void {
           client,
           `${message.messageType} ${message.contents}`
         );
+      } else if (message.messageType == MessageType.SERVER_ONLINE) {
+        DiscordLogger.send(client, `${message.messageType} Server online`);
       } else if (message.messageType == MessageType.USER_MESSAGE) {
         const userDiscordMessageRE = /^<([^>]+)> (dis:|discord:|!)\s*/;
         if (message.contents.match(userDiscordMessageRE)) {
@@ -68,7 +70,7 @@ function startMinecraft(): void {
   }
 
   mcDaemon.on("exit", (code: number | null) => {
-    DiscordLogger.err(client, `Minecraft exited with code: ${code}`);
+    DiscordLogger.send(client, `💥 Server crash! exit code: ${code}`);
     setTimeout(startMinecraft, 10000);
   });
 }
