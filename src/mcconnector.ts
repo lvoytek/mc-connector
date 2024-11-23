@@ -5,6 +5,7 @@ import ready from "./listeners/ready";
 import interactionCreate from "./listeners/interactionCreate";
 import { config } from "./config";
 import { DiscordLogger } from "./discordlogger";
+import { MessageResolver, MessageType } from "./mcmessageresolver";
 import { spawn, ChildProcess } from "child_process";
 
 const client = new Client({
@@ -30,15 +31,22 @@ function startMinecraft(): void {
   });
 
   if (mcDaemon.stdout) {
-    const stdoutLines = readline.createInterface({input: mcDaemon.stdout});
-    stdoutLines.on('line', (input) => {
-      DiscordLogger.send(client, input);
+    const stdoutLines = readline.createInterface({ input: mcDaemon.stdout });
+    stdoutLines.on("line", (input) => {
+      const message = MessageResolver.extract(input);
+
+      if (
+        message.messageType in
+        [MessageType.JOIN, MessageType.QUIT, MessageType.DEATH]
+      ) {
+        DiscordLogger.send(client, `${message.messageType} ${message.contents}`);
+      }
     });
   }
 
   if (mcDaemon.stderr) {
-    const stderrLines = readline.createInterface({input: mcDaemon.stderr});
-    stderrLines.on('line', (input) => {
+    const stderrLines = readline.createInterface({ input: mcDaemon.stderr });
+    stderrLines.on("line", (input) => {
       DiscordLogger.err(client, input);
     });
   }
