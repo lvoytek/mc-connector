@@ -4,6 +4,7 @@ export enum MessageType {
   SERVER_INFO = "ℹ️",
   SERVER_ONLINE = "💫",
   ACHIEVEMENT = "🎉",
+  CHALLENGE = "💪",
   DEATH = "💀",
   USER_MESSAGE = "💬",
   OTHER = "🤷",
@@ -56,7 +57,11 @@ export const MessageResolver = {
       return MessageType.ACHIEVEMENT;
     }
 
-    const onlineRE = /Done \([^\)]+\)! For help, type/
+    if (messageContent.match(/has completed the challenge/)) {
+      return MessageType.CHALLENGE;
+    }
+
+    const onlineRE = /Done \([^\)]+\)! For help, type/;
     if (messageContent.match(onlineRE)) {
       return MessageType.SERVER_ONLINE;
     }

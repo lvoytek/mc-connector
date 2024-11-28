@@ -41,6 +41,7 @@ function startMinecraft(): void {
           MessageType.QUIT,
           MessageType.DEATH,
           MessageType.ACHIEVEMENT,
+          MessageType.CHALLENGE,
         ].includes(message.messageType)
       ) {
         DiscordLogger.send(
