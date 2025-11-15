@@ -1,6 +1,4 @@
 import { Client } from "discord.js";
-import * as readline from "readline";
-import * as path from "path";
 import ready from "./listeners/ready";
 import interactionCreate from "./listeners/interactionCreate";
 import { config } from "./config";
@@ -12,55 +10,55 @@ const client = new Client({
   intents: ["GuildMessages", "Guilds"],
 });
 
+function handleLine(line: string): void {
+  const message = MessageResolver.extract(line);
+
+  if (
+    [
+      MessageType.JOIN,
+      MessageType.QUIT,
+      MessageType.DEATH,
+      MessageType.ACHIEVEMENT,
+      MessageType.CHALLENGE,
+    ].includes(message.messageType)
+  ) {
+    DiscordLogger.send(client, `${message.messageType} ${message.contents}`);
+  } else if (message.messageType == MessageType.SERVER_ONLINE) {
+    DiscordLogger.send(client, `${message.messageType} Server online`);
+  } else if (message.messageType == MessageType.USER_MESSAGE) {
+    const userDiscordMessageRE = /^<([^>]+)> (dis:|discord:|!)\s*/;
+    if (message.contents.match(userDiscordMessageRE)) {
+      const userMessage = message.contents.replace(/(dis:|discord:|!)\s*/, "");
+      DiscordLogger.send(client, `${message.messageType} ${userMessage}`);
+    }
+  }
+}
+
 function startLogServer(): void {
-  const server = net.createServer((socket: net.Socket) => {
-    const remote = `${socket.remoteAddress ?? "unknown"}:${socket.remotePort ?? 0}`;
-    DiscordLogger.send(client, `Log connection from ${remote}`);
+    const socket = net.createConnection({ host: config.LogHost, port: config.LogPort }, () => {
+      console.log(`Connected to ${config.LogHost}:${config.LogPort}`);
+    });
 
-  const socketLines = readline.createInterface({ input: socket });
-  socketLines.on("line", (input: string) => {
-      const message = MessageResolver.extract(input);
+    let buffer = '';
 
-      if (
-        [
-          MessageType.JOIN,
-          MessageType.QUIT,
-          MessageType.DEATH,
-          MessageType.ACHIEVEMENT,
-          MessageType.CHALLENGE,
-        ].includes(message.messageType)
-      ) {
-        DiscordLogger.send(client, `${message.messageType} ${message.contents}`);
-      } else if (message.messageType == MessageType.SERVER_ONLINE) {
-        DiscordLogger.send(client, `${message.messageType} Server online`);
-      } else if (message.messageType == MessageType.USER_MESSAGE) {
-        const userDiscordMessageRE = /^<([^>]+)> (dis:|discord:|!)\s*/;
-        if (message.contents.match(userDiscordMessageRE)) {
-          const userMessage = message.contents.replace(/(dis:|discord:|!)\s*/, "");
-          DiscordLogger.send(client, `${message.messageType} ${userMessage}`);
-        }
-      }
+    socket.on('data', (chunk: Buffer) => {
+      buffer += chunk.toString();
+
+      let lines = buffer.split('\n');
+      buffer = lines.pop() as string;
+
+      lines.forEach((line) => {
+        handleLine(line);
+      });
     });
 
     socket.on("error", (err: Error) => {
-      DiscordLogger.err(client, `Socket error (${remote}): ${err.message}`);
+      DiscordLogger.err(client, `Socket error: ${err.message}`);
     });
 
     socket.on("close", () => {
-      DiscordLogger.send(client, `Log connection closed ${remote}`);
+      DiscordLogger.send(client, `Log connection closed`);
     });
-  });
-
-  server.on("error", (err: Error) => {
-    DiscordLogger.err(client, `Log server error: ${err.message}`);
-  });
-
-  server.listen(config.LogPort, config.LogHost, () => {
-    DiscordLogger.send(
-      client,
-      `Listening for Minecraft logs on ${config.LogHost}:${config.LogPort}`
-    );
-  });
 }
 
 ready(client);
