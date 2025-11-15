@@ -55,8 +55,11 @@ function startLogServer(): void {
     DiscordLogger.err(client, `Log server error: ${err.message}`);
   });
 
-  server.listen(config.LogPort, () => {
-    DiscordLogger.send(client, `Listening for Minecraft logs on port ${config.LogPort}`);
+  server.listen(config.LogPort, config.LogHost, () => {
+    DiscordLogger.send(
+      client,
+      `Listening for Minecraft logs on ${config.LogHost}:${config.LogPort}`
+    );
   });
 }
 
