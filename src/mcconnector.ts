@@ -22,14 +22,14 @@ function handleLine(line: string): void {
       MessageType.CHALLENGE,
     ].includes(message.messageType)
   ) {
-    DiscordLogger.send(client, `${message.messageType} ${message.contents}`);
+    DiscordLogger.send(client, `${config.ServerPrefix}${message.messageType} ${message.contents}`);
   } else if (message.messageType == MessageType.SERVER_ONLINE) {
-    DiscordLogger.send(client, `${message.messageType} Server online`);
+    DiscordLogger.send(client, `${config.ServerPrefix}${message.messageType} Server online`);
   } else if (message.messageType == MessageType.USER_MESSAGE) {
     const userDiscordMessageRE = /^<([^>]+)> (dis:|discord:|!)\s*/;
     if (message.contents.match(userDiscordMessageRE)) {
       const userMessage = message.contents.replace(/(dis:|discord:|!)\s*/, "");
-      DiscordLogger.send(client, `${message.messageType} ${userMessage}`);
+      DiscordLogger.send(client, `${config.ServerPrefix}${message.messageType} ${userMessage}`);
     }
   }
 }
